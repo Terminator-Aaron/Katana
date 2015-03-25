@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using Microsoft.Owin;
 using Owin;
 using System.Web.Http;
-using Microsoft.Owin.Security.OAuth;
 using System.Security.Claims;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
+using Microsoft.Owin.Security.Cookies;
 
 [assembly: OwinStartup(typeof(_Security.Startup))]
 
@@ -15,35 +15,16 @@ namespace _Security
 {
     public class Startup
     {
-        public static string PublicClientId { get; private set; }
-
-
         public void Configuration(IAppBuilder app)
         {
-            PublicClientId = "self";
-            OAuthAuthorizationServerOptions aAuthOptions = new OAuthAuthorizationServerOptions
+
+            var cookieOptions = new CookieAuthenticationOptions()
             {
-                TokenEndpointPath = new PathString("/Token"),
-                Provider = new ApplicationOAuthProvider(PublicClientId),
-                //AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
-                AllowInsecureHttp = true
+                LoginPath = new PathString("/LoginHandler"),
+                AuthenticationType = CookieAuthenticationDefaults.AuthenticationType,
+                Provider = new AppCookieAuthProvider()
             };
-
-            app.UseOAuthAuthorizationServer(aAuthOptions);
-
-            //app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions
-            //{
-            //    AccessTokenFormat = aAuthOptions.AccessTokenFormat,
-            //    AccessTokenProvider = aAuthOptions.AccessTokenProvider,
-            //    AuthenticationMode = aAuthOptions.AuthenticationMode,
-            //    AuthenticationType = aAuthOptions.AuthenticationType,
-            //    Description = aAuthOptions.Description,
-            //    Provider = new ApplicationOAuthBearerProvider(),
-            //    SystemClock = aAuthOptions.SystemClock
-            //});
-
-
+            app.UseCookieAuthentication(cookieOptions);
 
             // web api
             var apiConfig = new System.Web.Http.HttpConfiguration();

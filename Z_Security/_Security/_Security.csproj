@@ -68,6 +68,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="LoginPage.html" />
     <Content Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -82,8 +83,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationOAuthBearerProvider.cs" />
-    <Compile Include="ApplicationOAuthProvider.cs" />
+    <Compile Include="AccountController.cs" />
+    <Compile Include="AppCookieAuthProvider.cs" />
+    <Compile Include="LoginHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ValuesController.cs" />
@@ -105,9 +107,9 @@
       <Project>{9f0c72d8-e43f-4f01-9deb-9e8fe0ae179e}</Project>
       <Name>Microsoft.Owin.Host.SystemWeb</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Microsoft.Owin.Security.OAuth\Microsoft.Owin.Security.OAuth.csproj">
-      <Project>{f71e48d0-115a-4105-b332-fccb2139dc23}</Project>
-      <Name>Microsoft.Owin.Security.OAuth</Name>
+    <ProjectReference Include="..\..\src\Microsoft.Owin.Security.Cookies\Microsoft.Owin.Security.Cookies.csproj">
+      <Project>{2fb9342f-ca85-4903-8667-45ed64ad25a6}</Project>
+      <Name>Microsoft.Owin.Security.Cookies</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Microsoft.Owin.Security\Microsoft.Owin.Security.csproj">
       <Project>{aaaf8157-1e33-4d6c-8319-3b304d018005}</Project>
@@ -129,17 +131,17 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2587</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:25077/</IISUrl>
+          <IISUrl>http://localhost:2587/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>True</UseCustomServer>
+          <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
           </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
-          <servers defaultServer="OwinHost">
+          <servers defaultServer="">
             <server name="OwinHost" exePath="{solutiondir}\packages\OwinHost.3.0.1\tools\OwinHost.exe" cmdArgs="-u {url}" url="http://localhost:22345/" workingDir="{projectdir}" />
           </servers>
         </WebProjectProperties>
