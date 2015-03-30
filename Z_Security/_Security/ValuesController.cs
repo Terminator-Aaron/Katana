@@ -9,7 +9,7 @@ namespace _Security
 {
     //[RoutePrefix("api/Values")]
     //[AllowAnonymous]
-    //[HostAuthentication("ABC")]
+    [HostAuthentication("Cookies")]
     //[Authorize]
     public class ABCController : ApiController
     {

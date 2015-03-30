@@ -149,6 +149,9 @@ namespace Microsoft.Owin.Security.Cookies
                     cookieOptions.Secure = Options.CookieSecure == CookieSecureOption.Always;
                 }
 
+                #region == 登陆，登出，刷新 ==
+
+                // 登陆
                 if (shouldSignin)
                 {
                     var signInContext = new CookieResponseSignInContext(
@@ -214,6 +217,7 @@ namespace Microsoft.Owin.Security.Cookies
 
                     Options.Provider.ResponseSignedIn(signedInContext);
                 }
+                // 登出
                 else if (shouldSignout)
                 {
                     if (Options.SessionStore != null && _sessionKey != null)
@@ -233,6 +237,7 @@ namespace Microsoft.Owin.Security.Cookies
                         Options.CookieName,
                         context.CookieOptions);
                 }
+                // 刷新
                 else if (_shouldRenew)
                 {
                     model.Properties.IssuedUtc = _renewIssuedUtc;
@@ -261,6 +266,8 @@ namespace Microsoft.Owin.Security.Cookies
                         cookieOptions);
                 }
 
+                #endregion
+
                 Response.Headers.Set(
                     HeaderNameCacheControl,
                     HeaderValueNoCache);
@@ -273,13 +280,14 @@ namespace Microsoft.Owin.Security.Cookies
                     HeaderNameExpires,
                     HeaderValueMinusOne);
 
+                // 跳转
                 bool shouldLoginRedirect = shouldSignin && Options.LoginPath.HasValue && Request.Path == Options.LoginPath;
                 bool shouldLogoutRedirect = shouldSignout && Options.LogoutPath.HasValue && Request.Path == Options.LogoutPath;
 
                 if ((shouldLoginRedirect || shouldLogoutRedirect) && Response.StatusCode == 200)
                 {
                     IReadableStringCollection query = Request.Query;
-                    string redirectUri = query.Get(Options.ReturnUrlParameter);
+                    string redirectUri = query.Get(Options.ReturnUrlParameter); // 根据url参数读取 跳转url
                     if (!string.IsNullOrWhiteSpace(redirectUri)
                         && IsHostRelative(redirectUri))
                     {
